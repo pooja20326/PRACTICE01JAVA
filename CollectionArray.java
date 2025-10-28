@@ -1,0 +1,20 @@
+import java.util.*;
+public class CollectionArray
+{
+    public static void main(String[] args)
+    {
+        ArrayList<String> list=new ArrayList<>();
+        list.add("pineapple");
+        list.add("orange");
+        list.add("pineapple");
+        list.add("grapes");;
+        System.out.println(list);
+        System.out.println(list.get(1));
+
+        list.remove("pineapple");//removes first pineapple only......
+        for(String fruit:list)
+        {
+            System.out.println(fruit);
+        }
+    }
+}
