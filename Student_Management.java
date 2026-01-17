@@ -29,7 +29,8 @@ public static void main(String[] args)
         System.out.println(" 1. Add Student ");
         System.out.println(" 2. View All Student");
         System.out.println(" 3. Srearch Student by id");
-        System.out.println(" 4. Exit");
+        System.out.println(" 4. Remove Student");
+        System.out.println(" 5. Exit");
         choice=sc.nextInt();
         switch(choice)
         {
@@ -76,11 +77,33 @@ public static void main(String[] args)
             }
             break;
         case 4:
+            System.out.println(" Enter Student ID to remove from the list");
+            int removeid=sc.nextInt();
+            boolean removed=false;
+            Iterator<Student> iterate=new Iterator<>();
+            while(iterate.hasNext())
+            {
+                Student s=itr.next();
+                if(s.id==removedid)
+                {
+                    itr.remove();
+                   removed=true;
+                   System.out.println("Student removed from the list Successfully");
+                    break;
+                }
+            } 
+            if(!removed)
+            {
+                System.out.println(" Student not Found!!!!!!!!");
+            }
+            break;
+
+        case 5:
             System.out.println(" Thank you");
             break;
         default:
             System.out.println("Invalid Choice");
         }
-    }while(choice!=4);
+    }while(choice!=5);
 }
 }
