@@ -43,7 +43,7 @@ public static void main(String[] args)
                 System.out.println(" Enter Marks");
                 int mark=sc.nextInt();
                 students.add(new Student(id,name,mark));
-                System.out.println(" s4tudent Added Successfully!!!!!!!!1");
+                System.out.println(" Student Added Successfully!!!!!!!!1");
                 break;
             case 2:
                 if(students.isEmpty())
@@ -80,13 +80,13 @@ public static void main(String[] args)
             System.out.println(" Enter Student ID to remove from the list");
             int removeid=sc.nextInt();
             boolean removed=false;
-            Iterator<Student> iterate=new Iterator<>();
+            Iterator<Student> iterate=students.iterator();
             while(iterate.hasNext())
             {
-                Student s=itr.next();
-                if(s.id==removedid)
+                Student s=iterate.next();
+                if(s.id==removeid)
                 {
-                    itr.remove();
+                    iterate.remove();
                    removed=true;
                    System.out.println("Student removed from the list Successfully");
                     break;
