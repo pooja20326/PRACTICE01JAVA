@@ -3,8 +3,8 @@ public class Hashmap
 {
 public static void main(String[] args)
 {
-    HashMap<Integer,String> e=new HashMap<>();
-    Scanner sc=new canner(System.in);
+    HashMap<Long,String> e=new HashMap<>();
+    Scanner sc=new Scanner(System.in);
     int choice;
     do
     {
@@ -19,9 +19,9 @@ public static void main(String[] args)
         switch (choice) {
             case 1:
                 System.out.println("Enter phone no :");
-                int phoneno=sc.nextInt();
+                Long phoneno=sc.nextLong();
                 System.out.println("Enter name:");
-                Sc.nextLine();
+                sc.nextLine();
                 String name=sc.nextLine();
                 e.put(phoneno, name);
                 System.out.println("Contact saved Successfully"); 
@@ -34,16 +34,16 @@ public static void main(String[] args)
                 else
                 {
                     System.out.println("All Contact");
-                    for(Map.Entry<Integer,String> y:e.entrySet())
+                    for(Map.Entry<Long,String> y:e.entrySet())
                     {
-                       System.out.println(y.getKey()+"-->"+y.getvalue());
+                       System.out.println(y.getKey() + "-->" + y.getValue());
                     }
                 }
                 break;
             case 3:
                 System.out.println("Enter Phone no to delete");
-                int phone=sc.nextInt();
-                if(e.rmeove(phone)!=null)
+                Long phone=sc.nextLong();
+                if(e.remove(phone)!=null)
                 {
                     System.out.println("Contact removed Successfully");
                 }
@@ -51,6 +51,7 @@ public static void main(String[] args)
                 {
                     System.out.println("Contact Not found");
                 }
+                
                 break;
             case 4:
                 System.out.println("Enter no to search");
