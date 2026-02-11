@@ -16,6 +16,10 @@ public static void main(String[] args)
     System.out.println(maps.containsKey(5));
     System.out.println(maps.containsValue("pooja"));
     System.out.println(maps.size());
+    for(Map.Entry<Integer, String> entry:maps.entrySet())
+    {
+        System.out.println(entry.getKey()+ "-->" + entry.getValue());
+    }
 
 }
 }
