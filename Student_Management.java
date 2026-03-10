@@ -1,109 +1,254 @@
 import java.util.*;
+import java.io.*;
+//------Student class---------
 class Student
 {
-    int id;
-    String name;
-    int mark;
-    Student(int id, String name, int mark)
-    {
-        this.id=id;
-        this.name=name;
-        this.mark=mark;
+ private int id;
+ private String name;
+ private int marks;  
+ public Student(int id, String name,int marks)
+ {
+    this.id=id;
+    this.name=name;
+    this.marks=marks;
+ } 
+ public int getId()
+ {
+    return id;
+ }
+ public String getName()
+ {
+    return name;
+ }
+ public int getMarks()
+ {
+    return marks;
+ }
+ public void setMarks(int marks)
+ {
+    this.marks=marks;
+ }
+ @Override
+ public String toString()
+ {
+    return "ID : "+id+" , Name : "+ name + " Marks : " + marks;
+ }
 
-    }
-    void display()
-    {
-        System.out.println(" ID : "+ id + " NAME : " + name + " MARK : " + mark);
-    }
+ //-----SAVE STUDENT IN A FILE-FRIENDLY FORMATE--------------
+
+ public String toFileString()
+ {
+    return id+" , "+name+" , "+marks;
+ }
 }
-public class Student_Management 
+//----------SYSTEM CLASS------------
+class StudentManagementSystem
 {
-public static void main(String[] args) 
-{
-    ArrayList<Student> students=new ArrayList<>();
-    Scanner sc=new Scanner(System.in);
-    int choice;
-    do
-    {
-        System.out.println(" \n STUDENT MANAGEMENT  ");
-        System.out.println(" 1. Add Student ");
-        System.out.println(" 2. View All Student");
-        System.out.println(" 3. Srearch Student by id");
-        System.out.println(" 4. Remove Student");
-        System.out.println(" 5. Exit");
-        choice=sc.nextInt();
-        switch(choice)
-        {
-            case 1:
-                System.out.println(" Enter id");
-                int id=sc.nextInt();
-                sc.nextLine();
-                System.out.println(" Enter Student name");
-                String name=sc.nextLine();
-                System.out.println(" Enter Marks");
-                int mark=sc.nextInt();
-                students.add(new Student(id,name,mark));
-                System.out.println(" Student Added Successfully!!!!!!!!1");
-                break;
-            case 2:
-                if(students.isEmpty())
-                {
-                    System.out.println(" No Students found");
-                }
-                else
-                {
-                    for(Student s:students)
-                    {
-                        s.display();
-                    }
-                }
-                break;
-            case 3:
-                System.out.println(" Enter ID to Search");
-                int searchid=sc.nextInt();
-                boolean found=false;
-                for(Student s:students)
-                {
-                    if(s.id==searchid)
-                    {
-                    s.display();
-                    found=true;
-                    break;
-                    }
-                }
-            if(!found)
-            {
-                System.out.println(" Student not Found");
-            }
-            break;
-        case 4:
-            System.out.println(" Enter Student ID to remove from the list");
-            int removeid=sc.nextInt();
-            boolean removed=false;
-            Iterator<Student> iterate=students.iterator();
-            while(iterate.hasNext())
-            {
-                Student s=iterate.next();
-                if(s.id==removeid)
-                {
-                    iterate.remove();
-                   removed=true;
-                   System.out.println("Student removed from the list Successfully");
-                    break;
-                }
-            } 
-            if(!removed)
-            {
-                System.out.println(" Student not Found!!!!!!!!");
-            }
-            break;
+    private Map<Integer, Student> students=new HashMap<>();
+    private final String filename="students.txt";
 
-        case 5:
-            System.out.println(" Thank you");
-            break;
-        default:
-            System.out.println("Invalid Choice");
+    //----LOAD STUDENTS FROM FILE-------
+    public void loadFromFile()
+    {
+        File file=new File(filename);
+        if(!file.exists()) return;
+        
+            try (BufferedReader br=new BufferedReader(new FileReader(file)))
+            {
+                String line;
+                while((line=br.readLine())!=null)
+                {
+                    String[] parts=line.split(",");
+                    int id=Integer.parseInt(parts[0].trim());
+                    String name=parts[1].trim();
+                    int marks=Integer.parseInt(parts[2].trim());
+                    students.put(id,new Student(id,name,marks));
+                }
+            }
+            catch(IOException e)
+            {
+                System.out.println("Error loading File : "+e.getMessage());
+            }
         }
-    }while(choice!=5);
+    
+
+        //--------SAVE STUDENT TO FILE---------
+
+        public void saveToFile()
+        {
+        
+            try(BufferedWriter bw=new BufferedWriter(new FileWriter(filename)))
+            {
+               for(Student s : students.values())
+               {
+                 bw.write(s.toFileString());
+                 bw.newLine();
+               }
+            }
+            catch(IOException e)
+            {
+                System.out.println(" Error Saving FIle!!"+e.getMessage());
+            }
+       }
+       
+       //----ADD STUDENT------
+        
+       public void addStudent(int id, String name, int marks)
+       {
+        if(students.containsKey(id))
+        {
+            System.out.println("Studnet id already Existed!!!!!");
+            return;
+        }
+        students.put(id, new Student(id,name,marks));
+        System.out.println("Student Added Successfully");
+       }
+       //------VIEW STUDENT------
+       public void ViewStudent()
+       {
+        if(students.isEmpty())
+        {
+         System.out.println("No Student Available");
+         return;
+        }
+        for(Student s:students.values())
+        {
+            System.out.println(s);
+        }
+       }
+
+       //--------SEARCH STUDENT BY ID-----------
+
+       public void searchStudent(int id)
+       {
+         Student s=students.get(id);
+         if(s==null)
+         {
+            System.out.println("Student Not Found");
+         }
+         else
+        {
+            System.out.println(s);
+        }
+       }
+
+       //--------UPDATE MARKS-------
+       
+       public void updateMarks(int id, int marks)
+       {
+       Student s=students.get(id);
+       if(s==null)
+        {
+            System.out.println("Student not found");
+        } 
+        else
+        {
+            s.setMarks(marks);
+            System.out.println("Marks updated Successfully!!!!!");
+        }
+       }
+
+       //---------Delete Student---------
+       public void deleteStudent(int id)
+       {
+         if(students.remove(id)!=null)
+         {
+            System.out.println("Student Removed Successfully");
+         }
+         else
+         {
+            System.out.println("Student not found!!");
+         }
+       }
 }
-}
+       //-------MAIN CLASS--------
+        public class Student_Management
+        {
+            public static void main(String[] args)
+       {
+         Scanner sc=new Scanner(System.in);
+         StudentManagementSystem sm=new StudentManagementSystem();
+         sm.loadFromFile();
+         int choice;
+         do
+         {
+            System.out.println("/n ---- Student Management System ----");
+            System.out.println("1. Add Student");
+            System.out.println("2. View Student");
+            System.out.println("3. Search by Student");
+            System.out.println("4. Update Mark");
+            System.out.println("5. Delete Student");
+            System.out.println("6. Exit");
+            System.out.println("Enter your choice");
+            try
+            {
+                 choice=Integer.parseInt(sc.nextLine());
+            }
+            catch(NumberFormatException e)
+            {
+                System.out.println(" please enter a valid number");
+                continue;
+            }
+            switch (choice) {
+                case 1 ->
+                {
+                    try
+                    {
+                          System.out.println("Enter id : ");
+                          int id=Integer.parseInt(sc.nextLine());
+                          System.out.println("Enter name");
+                          String name=sc.nextLine();
+                          System.out.println("Enter Mark");
+                          int marks=Integer.parseInt(sc.nextLine());
+                          sm.addStudent(id,name,marks);
+                          sm.saveToFile();
+                    }
+                    catch(NumberFormatException e)
+                    {
+                        System.out.println("Invalid input plaese enter number for id and marks!!");
+                    }
+                    
+                }
+                case 2-> sm.ViewStudent();
+                case 3->
+                {
+                   System.out.println("Enter id to search!!");
+                   int id=Integer.parseInt(sc.nextLine());
+                   sm.searchStudent(id); 
+                }
+                case 4 ->
+                {
+                    System.out.println("Enter id to update marks!!!");
+                    int id=Integer.parseInt(sc.nextLine());
+                    System.out.println("Enter mark to update!!");
+                    int marks=Integer.parseInt(sc.nextLine());
+                    sm.updateMarks(id , marks);
+                    sm.saveToFile();
+                }                    
+                case 5 ->
+                {
+                    System.out.println("Enter id to delete!");
+                    int id=Integer .parseInt(sc.nextLine());
+                    sm.deleteStudent(id);
+                    sm.saveToFile();
+                }
+                case 6->
+                {
+                    System.out.println(" Exiting System.Goodbye!!!!");
+                    return;
+                }
+            
+                default->
+                    System.out.println("Invalid Choice!");
+            }
+
+        }while(true);
+       }
+        
+     }
+       
+
+
+       
+    
+
