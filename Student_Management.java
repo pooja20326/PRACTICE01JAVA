@@ -160,6 +160,26 @@ class StudentManagementSystem
             System.out.println("Student not found!!");
          }
        }
+
+       //-----------Finding TOPPER STUDENT-----------
+       public void findTopper()
+       {
+        if(students.isEmpty())
+        {
+            System.out.println("No Students Available");
+            return;
+        }
+        Student topper=null;
+        for(Student s:students.values())
+        {
+            if(topper==null||s.getMarks()>topper.getMarks())
+            {
+                topper=s;
+            }
+        }
+        System.out.println("Topper Student :");
+        System.out.println(topper);
+       }
 }
        //-------MAIN CLASS--------
         public class Student_Management
@@ -178,7 +198,8 @@ class StudentManagementSystem
             System.out.println("3. Search by Student");
             System.out.println("4. Update Mark");
             System.out.println("5. Delete Student");
-            System.out.println("6. Exit");
+            System.out.println("6. Topper of the Class");
+            System.out.println("7. Exit");
             System.out.println("Enter your choice");
             try
             {
@@ -233,6 +254,10 @@ class StudentManagementSystem
                     sm.saveToFile();
                 }
                 case 6->
+                {
+                    sm.findTopper();
+                }
+                case 7->
                 {
                     System.out.println(" Exiting System.Goodbye!!!!");
                     return;
