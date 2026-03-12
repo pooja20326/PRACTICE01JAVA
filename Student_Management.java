@@ -179,7 +179,65 @@ class StudentManagementSystem
         }
         System.out.println("Topper Student :");
         System.out.println(topper);
+    }
+
+    // ----------SHOW TOP 3 STUDENTS----------------
+    public void topThreeStudent()
+    {
+        if(students.isEmpty())
+        {
+            System.out.println("No Students Available");
+            return;
+        }
+        List<Student> list=new ArrayList<>(students.values());
+        list.sort((s1,s2)->{
+            if(s1.getMarks()>s2.getMarks())
+                return -1;
+            else if(s1.getMarks()<s2.getMarks())
+                return 1;
+            else
+                return 0;
+        });
+        System.out.println("Top 3 Student of a Class");
+        int count=0;
+        for(Student s:list)
+        {
+            System.out.println(s);
+            count ++;
+            if(count==3)
+            {
+                break;
+            }
+        }
+    }
+      
+        //--------SORT STUDENT BY MARK-------------
+       public void sortStudent()
+       {
+        List<Student> list=new ArrayList<>(students.values());
+        list.sort((s1,s2)->
+        {
+           if(s1.getMarks()>s2.getMarks())
+           {
+             return -1;
+           }
+             
+        else if(s1.getMarks()<s2.getMarks())
+        {
+            return 1;
+        }
+        else
+        {
+
+            return 0 ;
+        }
+        });
+       
+       for(Student s:list)
+       {
+        System.out.println(s);
        }
+    }
 }
        //-------MAIN CLASS--------
         public class Student_Management
@@ -192,14 +250,16 @@ class StudentManagementSystem
          int choice;
          do
          {
-            System.out.println("/n ---- Student Management System ----");
+            System.out.println("\n ---- Student Management System ----");
             System.out.println("1. Add Student");
             System.out.println("2. View Student");
             System.out.println("3. Search by Student");
             System.out.println("4. Update Mark");
             System.out.println("5. Delete Student");
             System.out.println("6. Topper of the Class");
-            System.out.println("7. Exit");
+            System.out.println("7. Sort Student by Marks");
+            System.out.println("8. Show Top 3 Student of a class");
+            System.out.println("9. Exit");
             System.out.println("Enter your choice");
             try
             {
@@ -258,6 +318,14 @@ class StudentManagementSystem
                     sm.findTopper();
                 }
                 case 7->
+                {
+                    sm.sortStudent();
+                }
+                case 8->
+                {
+                    sm.topThreeStudent();
+                }
+                case 9->
                 {
                     System.out.println(" Exiting System.Goodbye!!!!");
                     return;
